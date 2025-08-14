@@ -122,6 +122,63 @@ uvicorn app.main:app --reload
 
 MIT License
 
+## 前端界面
+
+### 🎨 现代化Web界面
+
+项目已包含完整的前端界面，使用 React + TypeScript + Ant Design 构建。
+
+#### 主要页面
+- **仪表板**: 关键指标展示和快速操作
+- **引导配置**: 分步骤的AI引导流程
+- **业务开发**: AI客户发现和进度跟踪
+- **潜在客户**: 客户管理和筛选
+- **数据分析**: 业务数据分析和报告
+- **系统设置**: 配置管理和偏好设置
+
+#### 快速启动前端
+
+1. **进入前端目录**
+```bash
+cd frontend
+```
+
+2. **安装依赖**
+```bash
+npm install
+```
+
+3. **启动开发服务器**
+```bash
+npm run dev
+```
+
+4. **访问前端界面**
+- 前端地址: http://localhost:3000
+- 后端API: http://localhost:8000
+
+#### 使用启动脚本（推荐）
+
+**macOS/Linux:**
+```bash
+./start_frontend.sh
+```
+
+**Windows:**
+```cmd
+start_frontend.bat
+```
+
+### 🛠️ 前端技术栈
+
+- **React 18** - 现代化用户界面库
+- **TypeScript** - 类型安全的JavaScript
+- **Ant Design** - 企业级UI组件库
+- **Tailwind CSS** - 实用优先的CSS框架
+- **Vite** - 快速的构建工具
+- **React Router** - 客户端路由管理
+- **React Query** - 数据获取和缓存
+
 ## 联系方式
 
 如有问题或建议，请通过以下方式联系：

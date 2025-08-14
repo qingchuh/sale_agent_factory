@@ -12,6 +12,13 @@ from pathlib import Path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
+# 加载环境变量
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    print("⚠️  警告: 未安装 python-dotenv，环境变量可能无法正确加载")
+
 def main():
     """主启动函数"""
     print("🚀 启动 AIBD-FactoryLink 全自动外贸业务开发AI Agent...")
