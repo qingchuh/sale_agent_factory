@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # AIBD-FactoryLink 主应用
+  aibd-factorylink:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/aibd_factorylink
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    restart: unless-stopped
+    networks:
+      - aibd-network
+
+  # PostgreSQL 数据库
+  postgres:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=aibd_factorylink
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
+    networks:
+      - aibd-network
+
+  # Redis 缓存
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    networks:
+      - aibd-network
+
+  # Celery 工作进程（可选）
+  celery-worker:
+    build: .
+    command: celery -A app.core.celery worker --loglevel=info
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/aibd_factorylink
+      - REDIS_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - ./logs:/app/logs
+      - ./.env:/app/.env
+    restart: unless-stopped
+    networks:
+      - aibd-network
+
+  # Celery 监控（可选）
+  celery-monitor:
+    build: .
+    command: celery -A app.core.celery flower --port=5555
+    environment:
+      - DATABASE_URL=postgresql://postgres:password@postgres:5432/aibd_factorylink
+      - REDIS_URL=redis://redis:6379/0
+    ports:
+      - "5555:5555"
+    depends_on:
+      - postgres
+      - redis
+    restart: unless-stopped
+    networks:
+      - aibd-network
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  aibd-network:
+    driver: bridge
