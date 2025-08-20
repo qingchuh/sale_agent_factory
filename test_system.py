@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-AIBD-FactoryLink 系统测试脚本
+AIBD-FactoryLink System Test Script
 """
 
 import asyncio
 import sys
 from pathlib import Path
 
-# 添加项目根目录到Python路径
+# Add project root directory to Python path
 project_root = Path(__file__).parent
 sys.path.insert(0, str(project_root))
 
@@ -18,145 +18,145 @@ from app.services.content_creator import ContentCreator
 
 
 async def test_web_analyzer():
-    """测试网站分析服务"""
-    print("🔍 测试网站分析服务...")
+    """Test website analysis service"""
+    print("🔍 Testing website analysis service...")
     
     analyzer = WebAnalyzer()
     
-    # 测试一个示例网站（这里使用一个公开的网站）
+    # Test with an example website (using a public website here)
     test_url = "https://httpbin.org/html"
     
     try:
         result = await analyzer.analyze_website(test_url)
-        print(f"✅ 网站分析成功: {result.get('total_pages_analyzed', 0)} 个页面")
+        print(f"✅ Website analysis successful: {result.get('total_pages_analyzed', 0)} pages")
         return True
     except Exception as e:
-        print(f"❌ 网站分析失败: {e}")
+        print(f"❌ Website analysis failed: {e}")
         return False
 
 
 async def test_lead_generator():
-    """测试潜在客户生成服务"""
-    print("👥 测试潜在客户生成服务...")
+    """Test lead generation service"""
+    print("👥 Testing lead generation service...")
     
     generator = LeadGenerator()
     
-    # 模拟市场分析数据
+    # Simulate market analysis data
     market_analysis = {
-        "target_markets": ["北美", "欧洲"],
+        "target_markets": ["North America", "Europe"],
         "opportunity_score": 85,
-        "market_trends": ["数字化转型", "可持续发展"]
+        "market_trends": ["Digital Transformation", "Sustainable Development"]
     }
     
     try:
         leads = await generator.generate_leads(factory_id=1, market_analysis=market_analysis)
-        print(f"✅ 潜在客户生成成功: {len(leads)} 个客户")
+        print(f"✅ Lead generation successful: {len(leads)} customers")
         return True
     except Exception as e:
-        print(f"❌ 潜在客户生成失败: {e}")
+        print(f"❌ Lead generation failed: {e}")
         return False
 
 
 async def test_content_creator():
-    """测试内容创建服务"""
-    print("📝 测试内容创建服务...")
+    """Test content creation service"""
+    print("📝 Testing content creation service...")
     
     creator = ContentCreator()
     
     try:
         templates = await creator.create_content_templates(factory_id=1)
-        print(f"✅ 内容模板创建成功: {len(templates)} 个模板")
+        print(f"✅ Content template creation successful: {len(templates)} templates")
         return True
     except Exception as e:
-        print(f"❌ 内容模板创建失败: {e}")
+        print(f"❌ Content template creation failed: {e}")
         return False
 
 
 async def test_ai_agent():
-    """测试AI代理服务"""
-    print("🤖 测试AI代理服务...")
+    """Test AI agent service"""
+    print("🤖 Testing AI agent service...")
     
     agent = AIAgentService()
     
     try:
-        # 测试网站分析（使用模拟数据）
+        # Test website analysis (using mock data)
         result = await agent.start_onboarding("https://example.com")
-        print(f"✅ AI代理服务测试成功: {result.get('status', 'unknown')}")
+        print(f"✅ AI agent service test successful: {result.get('status', 'unknown')}")
         return True
     except Exception as e:
-        print(f"❌ AI代理服务测试失败: {e}")
+        print(f"❌ AI agent service test failed: {e}")
         return False
 
 
 async def run_all_tests():
-    """运行所有测试"""
-    print("🧪 开始运行 AIBD-FactoryLink 系统测试...\n")
+    """Run all tests"""
+    print("🧪 Starting AIBD-FactoryLink system tests...\n")
     
     tests = [
-        ("网站分析服务", test_web_analyzer),
-        ("潜在客户生成", test_lead_generator),
-        ("内容创建服务", test_content_creator),
-        ("AI代理服务", test_ai_agent)
+        ("Website Analysis Service", test_web_analyzer),
+        ("Lead Generation", test_lead_generator),
+        ("Content Creation Service", test_content_creator),
+        ("AI Agent Service", test_ai_agent)
     ]
     
     results = []
     
     for test_name, test_func in tests:
-        print(f"📋 测试: {test_name}")
+        print(f"📋 Test: {test_name}")
         try:
             result = await test_func()
             results.append((test_name, result))
             print()
         except Exception as e:
-            print(f"❌ 测试执行异常: {e}")
+            print(f"❌ Test execution exception: {e}")
             results.append((test_name, False))
             print()
     
-    # 输出测试结果摘要
-    print("📊 测试结果摘要:")
+    # Output test result summary
+    print("📊 Test Result Summary:")
     print("=" * 50)
     
     passed = 0
     total = len(results)
     
     for test_name, result in results:
-        status = "✅ 通过" if result else "❌ 失败"
+        status = "✅ Passed" if result else "❌ Failed"
         print(f"{test_name}: {status}")
         if result:
             passed += 1
     
     print("=" * 50)
-    print(f"总计: {passed}/{total} 个测试通过")
+    print(f"Total: {passed}/{total} tests passed")
     
     if passed == total:
-        print("🎉 所有测试通过！系统运行正常。")
+        print("🎉 All tests passed! System is running normally.")
         return True
     else:
-        print("⚠️  部分测试失败，请检查系统配置。")
+        print("⚠️  Some tests failed, please check system configuration.")
         return False
 
 
 def main():
-    """主函数"""
-    print("🚀 AIBD-FactoryLink 系统测试")
+    """Main function"""
+    print("🚀 AIBD-FactoryLink System Test")
     print("=" * 50)
     
     try:
-        # 运行异步测试
+        # Run async tests
         result = asyncio.run(run_all_tests())
         
         if result:
-            print("\n✅ 系统测试完成，可以启动服务了！")
-            print("💡 运行 'python start.py' 启动服务")
+            print("\n✅ System test completed, service can be started!")
+            print("💡 Run 'python start.py' to start the service")
         else:
-            print("\n❌ 系统测试失败，请检查配置")
+            print("\n❌ System test failed, please check configuration")
             sys.exit(1)
             
     except KeyboardInterrupt:
-        print("\n⏹️  测试被用户中断")
+        print("\n⏹️  Test interrupted by user")
         sys.exit(1)
     except Exception as e:
-        print(f"\n💥 测试过程中发生错误: {e}")
+        print(f"\n💥 Error occurred during testing: {e}")
         sys.exit(1)
 
 

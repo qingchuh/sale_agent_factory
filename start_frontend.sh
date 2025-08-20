@@ -1,32 +1,32 @@
 #!/bin/bash
 
-echo "🚀 启动 AIBD-FactoryLink 前端..."
+echo "🚀 Starting AIBD-FactoryLink Frontend..."
 
-# 检查是否在正确的目录
+# Check if in correct directory
 if [ ! -f "frontend/package.json" ]; then
-    echo "❌ 错误: 请在项目根目录运行此脚本"
+    echo "❌ Error: Please run this script from project root directory"
     exit 1
 fi
 
-# 进入前端目录
+# Enter frontend directory
 cd frontend
 
-# 检查是否已安装依赖
+# Check if dependencies are installed
 if [ ! -d "node_modules" ]; then
-    echo "📦 安装依赖..."
+    echo "📦 Installing dependencies..."
     npm install
     if [ $? -ne 0 ]; then
-        echo "❌ 依赖安装失败"
+        echo "❌ Dependency installation failed"
         exit 1
     fi
 fi
 
-# 启动开发服务器
-echo "🌟 启动开发服务器..."
-echo "📍 前端地址: http://localhost:3000"
-echo "🔗 后端API: http://localhost:8000"
+# Start development server
+echo "🌟 Starting development server..."
+echo "📍 Frontend address: http://localhost:3000"
+echo "🔗 Backend API: http://localhost:8000"
 echo ""
-echo "按 Ctrl+C 停止服务器"
+echo "Press Ctrl+C to stop server"
 echo ""
 
 npm run dev

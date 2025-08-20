@@ -1,14 +1,14 @@
-# AIBD-FactoryLink Docker 配置
+# AIBD-FactoryLink Docker Configuration
 FROM python:3.11-slim
 
-# 设置工作目录
+# Set working directory
 WORKDIR /app
 
-# 设置环境变量
+# Set environment variables
 ENV PYTHONPATH=/app
 ENV PYTHONUNBUFFERED=1
 
-# 安装系统依赖
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     gcc \
     g++ \
@@ -16,24 +16,24 @@ RUN apt-get update && apt-get install -y \
     curl \
     && rm -rf /var/lib/apt/lists/*
 
-# 复制依赖文件
+# Copy dependency files
 COPY requirements.txt .
 
-# 安装Python依赖
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 复制应用代码
+# Copy application code
 COPY . .
 
-# 创建日志目录
+# Create logs directory
 RUN mkdir -p logs
 
-# 暴露端口
+# Expose port
 EXPOSE 8000
 
-# 健康检查
+# Health check
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:8000/health || exit 1
 
-# 启动命令
+# Startup command
 CMD ["python", "start.py"]

@@ -1,119 +1,119 @@
-# 🚀 前端快速启动指南
+# 🚀 Frontend Quick Start Guide
 
-## 📋 前置要求
+## 📋 Prerequisites
 
-确保您的系统已安装：
+Ensure your system has installed:
 - **Node.js** 16.0+ 
-- **npm** 8.0+ 或 **yarn** 1.22+
+- **npm** 8.0+ or **yarn** 1.22+
 
-## 🎯 一键启动（推荐）
+## 🎯 One-Click Startup (Recommended)
 
-### macOS/Linux 用户
+### macOS/Linux Users
 ```bash
 ./start_frontend.sh
 ```
 
-### Windows 用户
+### Windows Users
 ```cmd
 start_frontend.bat
 ```
 
-## 🔧 手动启动
+## 🔧 Manual Startup
 
-### 1. 进入前端目录
+### 1. Enter Frontend Directory
 ```bash
 cd frontend
 ```
 
-### 2. 安装依赖
+### 2. Install Dependencies
 ```bash
 npm install
 ```
 
-### 3. 启动开发服务器
+### 3. Start Development Server
 ```bash
 npm run dev
 ```
 
-### 4. 访问前端界面
-打开浏览器访问: **http://localhost:3000**
+### 4. Access Frontend Interface
+Open browser and visit: **http://localhost:3000**
 
-## 🌟 主要功能预览
+## 🌟 Main Features Preview
 
-### 📊 仪表板
-- 关键业务指标展示
-- 快速操作入口
-- 系统状态监控
+### 📊 Dashboard
+- Key business metrics display
+- Quick operation access
+- System status monitoring
 
-### 🚀 引导配置
-- 网站自动分析
-- AI信息提取
-- 分步骤配置流程
+### 🚀 Onboarding Configuration
+- Automatic website analysis
+- AI information extraction
+- Step-by-step configuration process
 
-### 🌍 业务开发
-- AI客户发现
-- 进度实时跟踪
-- 结果可视化展示
+### 🌍 Business Development
+- AI customer discovery
+- Real-time progress tracking
+- Result visualization
 
-### 👥 潜在客户管理
-- 客户列表管理
-- 搜索和筛选
-- 状态跟踪
+### 👥 Lead Management
+- Customer list management
+- Search and filtering
+- Status tracking
 
-### 📈 数据分析
-- 业务数据统计
-- 趋势分析
-- 优化建议
+### 📈 Data Analytics
+- Business data statistics
+- Trend analysis
+- Optimization suggestions
 
-### ⚙️ 系统设置
-- AI参数配置
-- 业务规则设置
-- 系统偏好管理
+### ⚙️ System Settings
+- AI parameter configuration
+- Business rule settings
+- System preference management
 
-## 🔗 前后端连接
+## 🔗 Frontend-Backend Connection
 
-前端已配置代理，自动将API请求转发到后端：
-- 前端: http://localhost:3000
-- 后端API: http://localhost:8000
+Frontend is configured with proxy to automatically forward API requests to backend:
+- Frontend: http://localhost:3000
+- Backend API: http://localhost:8000
 - WebSocket: ws://localhost:8000
 
-## 🎨 界面特色
+## 🎨 Interface Features
 
-- **现代化设计**: 使用 Ant Design 组件库
-- **响应式布局**: 支持各种设备尺寸
-- **流畅动画**: 优雅的交互体验
-- **中文界面**: 完全中文化的用户界面
+- **Modern Design**: Uses Ant Design component library
+- **Responsive Layout**: Supports various device sizes
+- **Smooth Animations**: Elegant interaction experience
+- **English Interface**: Fully English user interface
 
-## 🚨 常见问题
+## 🚨 Common Issues
 
-### Q: 依赖安装失败？
-A: 尝试使用国内镜像：
+### Q: Dependency installation failed?
+A: Try using domestic mirror:
 ```bash
 npm config set registry https://registry.npmmirror.com
 npm install
 ```
 
-### Q: 端口被占用？
-A: 修改 `vite.config.ts` 中的端口配置
+### Q: Port is occupied?
+A: Modify port configuration in `vite.config.ts`
 
-### Q: 后端连接失败？
-A: 确保后端服务在 http://localhost:8000 运行
+### Q: Backend connection failed?
+A: Ensure backend service is running at http://localhost:8000
 
-## 📱 移动端支持
+## 📱 Mobile Support
 
-前端完全支持移动端访问，包括：
-- 响应式布局
-- 触摸友好的交互
-- 移动端优化的组件
+Frontend fully supports mobile access, including:
+- Responsive layout
+- Touch-friendly interactions
+- Mobile-optimized components
 
-## 🎯 下一步
+## 🎯 Next Steps
 
-启动前端后，您可以：
-1. 体验完整的用户界面
-2. 测试AI引导流程
-3. 查看业务开发功能
-4. 配置系统参数
+After starting frontend, you can:
+1. Experience complete user interface
+2. Test AI onboarding process
+3. View business development features
+4. Configure system parameters
 
 ---
 
-**🎉 恭喜！您的前端界面已经准备就绪！**
+**🎉 Congratulations! Your frontend interface is ready!**

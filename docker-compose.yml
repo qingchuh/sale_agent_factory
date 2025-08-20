@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # AIBD-FactoryLink 主应用
+  # AIBD-FactoryLink Main Application
   aibd-factorylink:
     build: .
     ports:
@@ -20,7 +20,7 @@ services:
     networks:
       - aibd-network
 
-  # PostgreSQL 数据库
+  # PostgreSQL Database
   postgres:
     image: postgres:15
     environment:
@@ -35,7 +35,7 @@ services:
     networks:
       - aibd-network
 
-  # Redis 缓存
+  # Redis Cache
   redis:
     image: redis:7-alpine
     ports:
@@ -46,7 +46,7 @@ services:
     networks:
       - aibd-network
 
-  # Celery 工作进程（可选）
+  # Celery Worker Process (Optional)
   celery-worker:
     build: .
     command: celery -A app.core.celery worker --loglevel=info
@@ -64,7 +64,7 @@ services:
     networks:
       - aibd-network
 
-  # Celery 监控（可选）
+  # Celery Monitor (Optional)
   celery-monitor:
     build: .
     command: celery -A app.core.celery flower --port=5555

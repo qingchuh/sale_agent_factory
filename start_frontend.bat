@@ -1,34 +1,34 @@
 @echo off
 chcp 65001 >nul
-echo 🚀 启动 AIBD-FactoryLink 前端...
+echo 🚀 Starting AIBD-FactoryLink Frontend...
 
-REM 检查是否在正确的目录
+REM Check if in correct directory
 if not exist "frontend\package.json" (
-    echo ❌ 错误: 请在项目根目录运行此脚本
+    echo ❌ Error: Please run this script from project root directory
     pause
     exit /b 1
 )
 
-REM 进入前端目录
+REM Enter frontend directory
 cd frontend
 
-REM 检查是否已安装依赖
+REM Check if dependencies are installed
 if not exist "node_modules" (
-    echo 📦 安装依赖...
+    echo 📦 Installing dependencies...
     npm install
     if errorlevel 1 (
-        echo ❌ 依赖安装失败
+        echo ❌ Dependency installation failed
         pause
         exit /b 1
     )
 )
 
-REM 启动开发服务器
-echo 🌟 启动开发服务器...
-echo 📍 前端地址: http://localhost:3000
-echo 🔗 后端API: http://localhost:8000
+REM Start development server
+echo 🌟 Starting development server...
+echo 📍 Frontend address: http://localhost:3000
+echo 🔗 Backend API: http://localhost:8000
 echo.
-echo 按 Ctrl+C 停止服务器
+echo Press Ctrl+C to stop server
 echo.
 
 npm run dev

@@ -1,163 +1,163 @@
-# AIBD-FactoryLink: 全自动外贸业务开发AI Agent
+# AIBD-FactoryLink: Full-Automated Foreign Trade Business Development AI Agent
 
-## 项目简介
+## Project Overview
 
-AIBD-FactoryLink 是一个基于AI的智能外贸业务开发系统，专门为制造业工厂提供全自动化的海外客户开发服务。
+AIBD-FactoryLink is an AI-based intelligent foreign trade business development system, specifically designed to provide fully automated overseas customer development services for manufacturing factories.
 
-## 核心功能
+## Core Features
 
-### 🚀 智能引导与配置
-- **一键网站分析**: 只需提供公司官网，AI自动提取关键信息
-- **智能档案建立**: 自动识别产品、优势、认证等信息
-- **交互式确认**: 通过对话完善所有必要信息
+### 🚀 Intelligent Onboarding & Configuration
+- **One-Click Website Analysis**: Simply provide your company website, AI automatically extracts key information
+- **Smart Profile Building**: Automatically identifies products, advantages, certifications, and other information
+- **Interactive Confirmation**: Complete all necessary information through dialogue
 
-### 🌍 全球业务开发
-- **市场分析**: 智能分析目标市场机会
-- **目标生成**: 基于ICP自动生成潜在客户列表
-- **资格认证**: 多维度筛选高质量客户
+### 🌍 Global Business Development
+- **Market Analysis**: Intelligent analysis of target market opportunities
+- **Lead Generation**: Automatically generates potential customer lists based on ICP
+- **Qualification Screening**: Multi-dimensional filtering for high-quality customers
 
-### 📝 个性化内容创建
-- **定制化营销材料**: 根据客户特点生成个性化内容
-- **多语言支持**: 支持多种语言的商务沟通
-- **品牌一致性**: 保持公司品牌形象统一
+### 📝 Personalized Content Creation
+- **Customized Marketing Materials**: Generates personalized content based on customer characteristics
+- **Multi-language Support**: Supports business communication in multiple languages
+- **Brand Consistency**: Maintains unified company brand image
 
-### 📧 多渠道执行
-- **邮件营销**: 智能邮件序列和跟进
-- **LinkedIn营销**: 专业的社交网络开发
-- **电话跟进**: 语音识别和智能对话
+### 📧 Multi-Channel Execution
+- **Email Marketing**: Intelligent email sequences and follow-ups
+- **LinkedIn Marketing**: Professional social network development
+- **Phone Follow-up**: Voice recognition and intelligent dialogue
 
-### 📊 机会管理
-- **销售漏斗**: 完整的客户生命周期管理
-- **进度跟踪**: 实时监控开发进度
-- **智能交接**: 自动生成客户档案和跟进建议
+### 📊 Opportunity Management
+- **Sales Funnel**: Complete customer lifecycle management
+- **Progress Tracking**: Real-time monitoring of development progress
+- **Smart Handover**: Automatically generates customer profiles and follow-up recommendations
 
-## 技术架构
+## Technical Architecture
 
-- **后端**: FastAPI + SQLAlchemy + PostgreSQL
-- **AI引擎**: OpenAI GPT + 自定义Prompt工程
-- **任务队列**: Celery + Redis
-- **前端**: 现代化Web界面 (计划中)
-- **部署**: Docker + Kubernetes (计划中)
+- **Backend**: FastAPI + SQLAlchemy + PostgreSQL
+- **AI Engine**: OpenAI GPT + Custom Prompt Engineering
+- **Task Queue**: Celery + Redis
+- **Frontend**: Modern Web Interface (Planned)
+- **Deployment**: Docker + Kubernetes (Planned)
 
-## 快速开始
+## Quick Start
 
-### 环境要求
+### Requirements
 - Python 3.9+
 - PostgreSQL 13+
 - Redis 6+
 
-### 安装步骤
+### Installation Steps
 
-1. 克隆项目
+1. Clone the project
 ```bash
 git clone <repository-url>
 cd sale_agent_factory
 ```
 
-2. 创建虚拟环境
+2. Create virtual environment
 ```bash
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-# 或
+# or
 venv\Scripts\activate  # Windows
 ```
 
-3. 安装依赖
+3. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-4. 配置环境变量
+4. Configure environment variables
 ```bash
 cp .env.example .env
-# 编辑 .env 文件，填入必要的配置信息
+# Edit .env file and fill in necessary configuration information
 ```
 
-5. 初始化数据库
+5. Initialize database
 ```bash
 alembic upgrade head
 ```
 
-6. 启动服务
+6. Start services
 ```bash
 uvicorn app.main:app --reload
 ```
 
-## 使用流程
+## Usage Workflow
 
-1. **初始配置**: 提供公司官网，AI自动分析并建立档案
-2. **信息确认**: 确认和补充关键信息（ICP、核心优势等）
-3. **启动开发**: AI开始全球业务开发工作
-4. **监控进度**: 实时查看开发状态和结果
-5. **客户交接**: 获得高质量的潜在客户列表
+1. **Initial Configuration**: Provide company website, AI automatically analyzes and builds profile
+2. **Information Confirmation**: Confirm and supplement key information (ICP, core advantages, etc.)
+3. **Launch Development**: AI begins global business development work
+4. **Monitor Progress**: Real-time view of development status and results
+5. **Customer Handover**: Obtain high-quality potential customer lists
 
-## 配置说明
+## Configuration
 
-### 环境变量
-- `OPENAI_API_KEY`: OpenAI API密钥
-- `DATABASE_URL`: 数据库连接字符串
-- `REDIS_URL`: Redis连接字符串
-- `SECRET_KEY`: 应用安全密钥
+### Environment Variables
+- `OPENAI_API_KEY`: OpenAI API key
+- `DATABASE_URL`: Database connection string
+- `REDIS_URL`: Redis connection string
+- `SECRET_KEY`: Application security key
 
-### AI配置
-- 支持自定义Prompt模板
-- 可配置的AI模型参数
-- 多语言支持配置
+### AI Configuration
+- Support for custom Prompt templates
+- Configurable AI model parameters
+- Multi-language support configuration
 
-## 开发计划
+## Development Roadmap
 
-- [x] 核心AI引擎开发
-- [x] 网站分析模块
-- [x] 基础API框架
-- [ ] Web管理界面
-- [ ] 移动端应用
-- [ ] 高级分析报告
-- [ ] 多租户支持
+- [x] Core AI engine development
+- [x] Website analysis module
+- [x] Basic API framework
+- [ ] Web management interface
+- [ ] Mobile application
+- [ ] Advanced analytics reports
+- [ ] Multi-tenant support
 
-## 贡献指南
+## Contributing
 
-欢迎提交Issue和Pull Request来帮助改进这个项目。
+Welcome to submit Issues and Pull Requests to help improve this project.
 
-## 许可证
+## License
 
 MIT License
 
-## 前端界面
+## Frontend Interface
 
-### 🎨 现代化Web界面
+### 🎨 Modern Web Interface
 
-项目已包含完整的前端界面，使用 React + TypeScript + Ant Design 构建。
+The project includes a complete frontend interface built with React + TypeScript + Ant Design.
 
-#### 主要页面
-- **仪表板**: 关键指标展示和快速操作
-- **引导配置**: 分步骤的AI引导流程
-- **业务开发**: AI客户发现和进度跟踪
-- **潜在客户**: 客户管理和筛选
-- **数据分析**: 业务数据分析和报告
-- **系统设置**: 配置管理和偏好设置
+#### Main Pages
+- **Dashboard**: Key metrics display and quick operations
+- **Onboarding**: Step-by-step AI-guided process
+- **Business Development**: AI customer discovery and progress tracking
+- **Leads**: Customer management and filtering
+- **Analytics**: Business data analysis and reports
+- **Settings**: Configuration management and preferences
 
-#### 快速启动前端
+#### Quick Start Frontend
 
-1. **进入前端目录**
+1. **Enter frontend directory**
 ```bash
 cd frontend
 ```
 
-2. **安装依赖**
+2. **Install dependencies**
 ```bash
 npm install
 ```
 
-3. **启动开发服务器**
+3. **Start development server**
 ```bash
 npm run dev
 ```
 
-4. **访问前端界面**
-- 前端地址: http://localhost:3000
-- 后端API: http://localhost:8000
+4. **Access frontend interface**
+- Frontend address: http://localhost:3000
+- Backend API: http://localhost:8000
 
-#### 使用启动脚本（推荐）
+#### Using Startup Scripts (Recommended)
 
 **macOS/Linux:**
 ```bash
@@ -169,18 +169,18 @@ npm run dev
 start_frontend.bat
 ```
 
-### 🛠️ 前端技术栈
+### 🛠️ Frontend Tech Stack
 
-- **React 18** - 现代化用户界面库
-- **TypeScript** - 类型安全的JavaScript
-- **Ant Design** - 企业级UI组件库
-- **Tailwind CSS** - 实用优先的CSS框架
-- **Vite** - 快速的构建工具
-- **React Router** - 客户端路由管理
-- **React Query** - 数据获取和缓存
+- **React 18** - Modern user interface library
+- **TypeScript** - Type-safe JavaScript
+- **Ant Design** - Enterprise-grade UI component library
+- **Tailwind CSS** - Utility-first CSS framework
+- **Vite** - Fast build tool
+- **React Router** - Client-side routing management
+- **React Query** - Data fetching and caching
 
-## 联系方式
+## Contact
 
-如有问题或建议，请通过以下方式联系：
-- 项目Issues: [GitHub Issues]
-- 邮箱: [联系邮箱]
+For questions or suggestions, please contact us through:
+- Project Issues: [GitHub Issues]
+- Email: [Contact Email]
