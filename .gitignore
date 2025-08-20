@@ -134,6 +134,18 @@ logs/
 *.sqlite
 *.sqlite3
 
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Frontend build
+frontend/dist/
+frontend/build/
+
 # IDE
 .vscode/
 .idea/

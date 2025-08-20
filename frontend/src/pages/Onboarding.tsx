@@ -1,315 +1,282 @@
-import React, { useState } from 'react'
-import { Card, Form, Input, Button, Steps, message, Row, Col, Typography, Alert } from 'antd'
-import { RocketOutlined, CheckCircleOutlined, LoadingOutlined } from '@ant-design/icons'
+import React, { useState, useRef, useEffect } from 'react'
+import { Card, Input, Button, Typography, Avatar, Spin, Alert } from 'antd'
+import { SendOutlined, RobotOutlined, UserOutlined, CheckCircleOutlined } from '@ant-design/icons'
 import { useNavigate } from 'react-router-dom'
 
 const { Title, Paragraph } = Typography
-const { Step } = Steps
+const { TextArea } = Input
 
-interface OnboardingData {
-  website_url: string
+interface Message {
+  id: string
+  type: 'ai' | 'user'
+  content: string
+  timestamp: Date
+  isAnalysis?: boolean
+}
+
+interface CompanyProfile {
   company_name: string
   main_products: string[]
   core_advantages: string[]
-  ideal_customer_profile: string
-  target_markets: string[]
-  contact_person: string
-  contact_title: string
+  certifications: string[]
+  ideal_customer_profile?: string
+  target_markets?: string
+  contact_person?: string
+  contact_title?: string
 }
 
 const Onboarding: React.FC = () => {
-  const [currentStep, setCurrentStep] = useState(0)
-  const [loading, setLoading] = useState(false)
-  const [form] = Form.useForm()
+  const [messages, setMessages] = useState<Message[]>([])
+  const [inputValue, setInputValue] = useState('')
+  const [isLoading, setIsLoading] = useState(false)
+  // const [isAnalysisMode, setIsAnalysisMode] = useState(false)
+  const [companyProfile, setCompanyProfile] = useState<CompanyProfile | null>(null)
+  const [isProfileComplete, setIsProfileComplete] = useState(false)
+  const messagesEndRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate()
 
-  const steps = [
-    {
-      title: '网站分析',
-      description: 'AI自动分析您的网站',
-      icon: <RocketOutlined />,
-    },
-    {
-      title: '信息确认',
-      description: '确认提取的信息',
-      icon: <CheckCircleOutlined />,
-    },
-    {
-      title: '档案完善',
-      description: '补充关键信息',
-      icon: <CheckCircleOutlined />,
-    },
-    {
-      title: '完成配置',
-      description: '开始AI业务开发',
-      icon: <CheckCircleOutlined />,
-    },
-  ]
+  // Auto-scroll to latest message
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
 
-  const handleWebsiteAnalysis = async (values: { website_url: string }) => {
-    setLoading(true)
+  // Initialize AI welcome message
+  useEffect(() => {
+    const welcomeMessage: Message = {
+      id: '1',
+      type: 'ai',
+      content: 'Hello! I am your AI business development assistant FactoryLink. Please enter your company\'s official website URL here so I can quickly understand your business.',
+      timestamp: new Date()
+    }
+    setMessages([welcomeMessage])
+  }, [])
+
+  // Simulate AI website analysis
+  const analyzeWebsite = async (_url: string): Promise<CompanyProfile> => {
+    // Simulate API call delay
+    await new Promise(resolve => setTimeout(resolve, 3000))
+    
+    // Simulate extracted information - in actual projects this would call real AI analysis API
+    return {
+      company_name: 'Premium Manufacturing Factory',
+      main_products: ['Electronics', 'Home Appliances', 'Industrial Equipment'],
+      core_advantages: ['High-Quality Manufacturing Process', 'Fast Delivery Capability', 'Cost Advantage', 'Technical Leadership'],
+      certifications: ['ISO9001 Quality Management System', 'CE Certification', 'RoHS Environmental Certification', 'UL Safety Certification']
+    }
+  }
+
+  // Generate AI analysis summary
+  const generateAnalysisSummary = (profile: CompanyProfile): string => {
+    return `## Company Advantages Summary
+
+**🏢 Company Profile**
+${profile.company_name} - A modern factory focused on high-quality manufacturing
+
+**📦 Core Products**
+${profile.main_products.join(', ')}
+
+**⭐ Core Advantages (USP)**
+${profile.core_advantages.map(adv => `• ${adv}`).join('\n')}
+
+**🏆 Certifications & Credentials**
+${profile.certifications.join(', ')}
+
+Please review and feel free to modify any inaccuracies. After confirmation, please tell me which type of global brands you would like to connect with? (The more specific the description, the better)`
+  }
+
+  // Handle user input
+  const handleSendMessage = async () => {
+    if (!inputValue.trim() || isLoading) return
+
+    const userMessage: Message = {
+      id: Date.now().toString(),
+      type: 'user',
+      content: inputValue,
+      timestamp: new Date()
+    }
+
+    setMessages(prev => [...prev, userMessage])
+    setInputValue('')
+    setIsLoading(true)
+
     try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 3000))
-      
-      // 模拟提取的信息
-      const extractedInfo = {
-        company_name: '优质制造工厂',
-        main_products: ['电子产品', '家居用品', '工业设备'],
-        core_advantages: ['高质量', '快速交付', '成本优势'],
-        certifications: ['ISO9001', 'CE认证'],
+      // Check if it's a website URL
+      if (inputValue.includes('http') && !companyProfile) {
+        // Website analysis mode
+        // setIsAnalysisMode(true)
+        
+        const aiThinkingMessage: Message = {
+          id: Date.now().toString() + '_thinking',
+          type: 'ai',
+          content: '🔍 Analyzing your website, please wait...',
+          timestamp: new Date(),
+          isAnalysis: true
+        }
+        
+        setMessages(prev => [...prev, aiThinkingMessage])
+        
+        const profile = await analyzeWebsite(inputValue)
+        setCompanyProfile(profile)
+        
+        // Remove thinking message, add analysis result
+        setMessages(prev => prev.filter(msg => !msg.isAnalysis))
+        
+        const analysisMessage: Message = {
+          id: Date.now().toString() + '_analysis',
+          type: 'ai',
+          content: generateAnalysisSummary(profile),
+          timestamp: new Date()
+        }
+        
+        setMessages(prev => [...prev, analysisMessage])
+        // setIsAnalysisMode(false)
+        
+      } else if (companyProfile && !isProfileComplete) {
+        // Information confirmation and completion mode
+        const aiResponseMessage: Message = {
+          id: Date.now().toString() + '_response',
+          type: 'ai',
+          content: `Received! Your profile has been updated and locked. Now launching global business development for you.
+
+🎯 Configuration complete! AI assistant is about to start finding global business opportunities for you.`,
+          timestamp: new Date()
+        }
+        
+        setMessages(prev => [...prev, aiResponseMessage])
+        setIsProfileComplete(true)
+        
+        // Delay navigation to business development page
+        setTimeout(() => {
+          navigate('/business-development')
+        }, 2000)
       }
       
-      form.setFieldsValue({
-        company_name: extractedInfo.company_name,
-        main_products: extractedInfo.main_products,
-        core_advantages: extractedInfo.core_advantages,
-      })
-      
-      message.success('网站分析完成！')
-      setCurrentStep(1)
     } catch (error) {
-      message.error('网站分析失败，请重试')
+      const errorMessage: Message = {
+        id: Date.now().toString() + '_error',
+        type: 'ai',
+        content: 'Sorry, we encountered an issue during analysis. Please check if the website address is correct, or try again later.',
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
     } finally {
-      setLoading(false)
+      setIsLoading(false)
     }
   }
 
-  const handleConfirmInfo = () => {
-    setCurrentStep(2)
-  }
-
-  const handleCompleteProfile = async (values: OnboardingData) => {
-    setLoading(true)
-    try {
-      // 模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 2000))
-      
-      message.success('工厂档案配置完成！')
-      setCurrentStep(3)
-      
-      // 延迟跳转到业务开发页面
-      setTimeout(() => {
-        navigate('/business-development')
-      }, 1500)
-    } catch (error) {
-      message.error('配置失败，请重试')
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const renderStepContent = () => {
-    switch (currentStep) {
-      case 0:
-        return (
-          <Card className="max-w-2xl mx-auto">
-            <div className="text-center mb-8">
-              <RocketOutlined className="text-6xl text-primary-500 mb-4" />
-              <Title level={2}>开始您的AI之旅</Title>
-              <Paragraph className="text-gray-600">
-                只需提供您的公司网站，AI就能自动分析并提取关键信息
-              </Paragraph>
-            </div>
-            
-            <Form
-              form={form}
-              onFinish={handleWebsiteAnalysis}
-              layout="vertical"
-            >
-              <Form.Item
-                name="website_url"
-                label="公司网站地址"
-                rules={[
-                  { required: true, message: '请输入网站地址' },
-                  { type: 'url', message: '请输入有效的网站地址' }
-                ]}
-              >
-                <Input 
-                  placeholder="例如: https://www.yourcompany.com" 
-                  size="large"
-                />
-              </Form.Item>
-              
-              <Form.Item>
-                <Button 
-                  type="primary" 
-                  size="large" 
-                  htmlType="submit"
-                  loading={loading}
-                  icon={<RocketOutlined />}
-                  className="w-full h-12 text-lg"
-                >
-                  {loading ? 'AI正在分析中...' : '开始AI分析'}
-                </Button>
-              </Form.Item>
-            </Form>
-            
-            {loading && (
-              <Alert
-                message="AI正在分析您的网站"
-                description="正在访问网站、提取信息、分析内容...请稍候"
-                type="info"
-                showIcon
-                icon={<LoadingOutlined spin />}
-                className="mt-4"
-              />
-            )}
-          </Card>
-        )
-        
-      case 1:
-        return (
-          <Card className="max-w-4xl mx-auto">
-            <Title level={3} className="mb-6">AI提取的信息</Title>
-            
-            <Row gutter={[24, 24]}>
-              <Col span={12}>
-                <Form.Item label="公司名称">
-                  <Input value={form.getFieldValue('company_name')} readOnly />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="主要产品">
-                  <Input value={form.getFieldValue('main_products')?.join(', ')} readOnly />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="核心优势">
-                  <Input value={form.getFieldValue('core_advantages')?.join(', ')} readOnly />
-                </Form.Item>
-              </Col>
-              <Col span={12}>
-                <Form.Item label="认证信息">
-                  <Input value="ISO9001, CE认证" readOnly />
-                </Form.Item>
-              </Col>
-            </Row>
-            
-            <div className="text-center mt-8">
-              <Button 
-                type="primary" 
-                size="large"
-                onClick={handleConfirmInfo}
-                className="h-12 px-8 text-lg"
-              >
-                信息正确，继续下一步
-              </Button>
-            </div>
-          </Card>
-        )
-        
-      case 2:
-        return (
-          <Card className="max-w-4xl mx-auto">
-            <Title level={3} className="mb-6">完善工厂档案</Title>
-            
-            <Form
-              form={form}
-              onFinish={handleCompleteProfile}
-              layout="vertical"
-            >
-              <Row gutter={[24, 24]}>
-                <Col span={12}>
-                  <Form.Item
-                    name="ideal_customer_profile"
-                    label="理想客户画像"
-                    rules={[{ required: true, message: '请描述您的理想客户' }]}
-                  >
-                    <Input.TextArea 
-                      placeholder="例如：北美消费电子品牌，年营收1000万以上，注重产品质量"
-                      rows={3}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name="target_markets"
-                    label="目标市场"
-                    rules={[{ required: true, message: '请选择目标市场' }]}
-                  >
-                    <Input placeholder="例如：北美、欧洲、东南亚" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name="contact_person"
-                    label="联系人姓名"
-                    rules={[{ required: true, message: '请输入联系人姓名' }]}
-                  >
-                    <Input placeholder="例如：张三" />
-                  </Form.Item>
-                </Col>
-                <Col span={12}>
-                  <Form.Item
-                    name="contact_title"
-                    label="联系人职位"
-                    rules={[{ required: true, message: '请输入联系人职位' }]}
-                  >
-                    <Input placeholder="例如：海外业务经理" />
-                  </Form.Item>
-                </Col>
-              </Row>
-              
-              <div className="text-center mt-8">
-                <Button 
-                  type="primary" 
-                  size="large"
-                  htmlType="submit"
-                  loading={loading}
-                  className="h-12 px-8 text-lg"
-                >
-                  {loading ? '配置中...' : '完成配置，启动AI业务开发'}
-                </Button>
-              </div>
-            </Form>
-          </Card>
-        )
-        
-      case 3:
-        return (
-          <Card className="max-w-2xl mx-auto text-center">
-            <CheckCircleOutlined className="text-8xl text-green-500 mb-6" />
-            <Title level={2} className="text-green-600 mb-4">
-              配置完成！ 🎉
-            </Title>
-            <Paragraph className="text-lg text-gray-600 mb-8">
-              您的工厂档案已经配置完成，AI助手即将开始为您寻找全球商机
-            </Paragraph>
-            <Button 
-              type="primary" 
-              size="large"
-              onClick={() => navigate('/business-development')}
-              className="h-12 px-8 text-lg"
-            >
-              开始AI业务开发
-            </Button>
-          </Card>
-        )
-        
-      default:
-        return null
+  // Handle Enter key to send
+  const handleKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault()
+      handleSendMessage()
     }
   }
 
   return (
-    <div className="space-y-8">
-      <div className="text-center">
-        <Title level={1}>AI引导配置</Title>
+    <div className="max-w-4xl mx-auto">
+      <div className="text-center mb-8">
+        <Title level={1}>AI-Guided Configuration</Title>
         <Paragraph className="text-lg text-gray-600">
-          让AI了解您的工厂，开始智能化的外贸业务开发
+          Chat with AI to complete your factory profile configuration
         </Paragraph>
       </div>
-      
-      <Steps 
-        current={currentStep} 
-        items={steps}
-        className="max-w-4xl mx-auto"
-      />
-      
-      <div className="mt-8">
-        {renderStepContent()}
-      </div>
+
+      {/* Chat Window */}
+      <Card className="h-96 overflow-hidden">
+        <div className="h-full flex flex-col">
+          {/* Message Area */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {messages.map((message) => (
+              <div
+                key={message.id}
+                className={`flex ${message.type === 'ai' ? 'justify-start' : 'justify-end'}`}
+              >
+                <div className={`flex items-start space-x-3 max-w-3xl ${message.type === 'ai' ? 'flex-row' : 'flex-row-reverse space-x-reverse'}`}>
+                  <Avatar
+                    icon={message.type === 'ai' ? <RobotOutlined /> : <UserOutlined />}
+                    className={message.type === 'ai' ? 'bg-blue-500' : 'bg-gray-500'}
+                  />
+                  <div className={`rounded-lg px-4 py-2 ${
+                    message.type === 'ai' 
+                      ? 'bg-gray-100 text-gray-800' 
+                      : 'bg-blue-500 text-white'
+                  }`}>
+                    {message.content.includes('##') ? (
+                      <div className="whitespace-pre-line">
+                        {message.content.split('##').map((part, index) => {
+                          if (index === 0) return null
+                          const [title, ...content] = part.split('\n')
+                          return (
+                            <div key={index} className="mb-4">
+                              <h4 className="font-semibold text-lg mb-2">{title}</h4>
+                              <div className="text-sm space-y-1">
+                                {content.map((line, lineIndex) => (
+                                  <div key={lineIndex}>{line}</div>
+                                ))}
+                              </div>
+                            </div>
+                          )
+                        })}
+                      </div>
+                    ) : (
+                      <div className="whitespace-pre-line">{message.content}</div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {isLoading && (
+              <div className="flex justify-start">
+                <div className="flex items-start space-x-3">
+                  <Avatar icon={<RobotOutlined />} className="bg-blue-500" />
+                  <div className="bg-gray-100 rounded-lg px-4 py-2">
+                    <Spin size="small" />
+                    <span className="ml-2 text-gray-600">AI is thinking...</span>
+                  </div>
+                </div>
+              </div>
+            )}
+            
+            <div ref={messagesEndRef} />
+          </div>
+
+          {/* Input Area */}
+          <div className="border-t p-4">
+            <div className="flex space-x-2">
+              <TextArea
+                value={inputValue}
+                onChange={(e) => setInputValue(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder={companyProfile ? "Please describe your ideal customer profile..." : "Please enter your company website address..."}
+                autoSize={{ minRows: 1, maxRows: 4 }}
+                disabled={isLoading || isProfileComplete}
+              />
+              <Button
+                type="primary"
+                icon={<SendOutlined />}
+                onClick={handleSendMessage}
+                loading={isLoading}
+                disabled={!inputValue.trim() || isLoading || isProfileComplete}
+                className="h-auto px-4"
+              >
+                Send
+              </Button>
+            </div>
+            
+            {isProfileComplete && (
+              <Alert
+                message="Configuration Complete!"
+                description="Redirecting to business development page..."
+                type="success"
+                showIcon
+                icon={<CheckCircleOutlined />}
+                className="mt-3"
+              />
+            )}
+          </div>
+        </div>
+      </Card>
     </div>
   )
 }

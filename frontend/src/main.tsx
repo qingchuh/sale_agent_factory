@@ -7,15 +7,8 @@ import zhCN from 'antd/locale/zh_CN'
 import App from './App.tsx'
 import './index.css'
 
-// 创建 React Query 客户端
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: 1,
-      refetchOnWindowFocus: false,
-    },
-  },
-})
+// Create React Query client
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
